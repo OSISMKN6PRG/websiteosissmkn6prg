@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OSIS SMKN 6 PINRANG - Website Resmi</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;700&display=swap');
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #f7fbff;
+    color: #2c3e50;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  a:hover {
+    color: #2980b9;
+  }
+
+  /* Navbar */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(255 255 255 / 0.95);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    z-index: 9999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  nav.scrolled {
+    background-color: #2980b9;
+    box-shadow: 0 3px 12px rgba(41,128,185,0.7);
+    color: white;
+  }
+  nav .logo {
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: #2980b9;
+    cursor: pointer;
+  }
+  nav.scrolled .logo {
+    color: #ecf0f1;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  nav ul li {
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+  nav ul li a {
+    color: #2c3e50;
+    transition: color 0.25s ease;
+  }
+  nav.scrolled ul li a {
+    color: #ecf0f1;
+  }
+  nav ul li a.active, nav ul li a:hover {
+    color: #16a085;
+    font-weight: 700;
+  }
+
+  /* Hamburger (Mobile) */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .hamburger span {
+    width: 26px;
+    height: 3px;
+    background-color: #2980b9;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+  }
+  nav.scrolled .hamburger span {
+    background-color: #ecf0f1;
+  }
+
+  @media (max-width: 768px) {
+    nav ul {
+      position: fixed;
+      top: 70px;
+      right: -100%;
+      background: #2980b9;
+      height: calc(100vh - 70px);
+      width: 220px;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2rem 1.5rem;
+      transition: right 0.3s ease;
+      box-shadow: -4px 6px 20px rgba(41,128,185,0.5);
+      z-index: 9998;
+      border-radius: 8px 0 0 8px;
+    }
+    nav ul.open {
+      right: 0;
+    }
+    nav ul li a {
+      color: white;
+      font-size: 1.2rem;
+    }
+    .hamburger {
+      display: flex;
+    }
+  }
+
+  /* Hero Slider */
+  #hero {
+    position: relative;
+    overflow: hidden;
+    height: 85vh;
+    max-height: 720px;
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 0 2rem;
+    text-align: center;
+  }
+  .slide.active {
+    opacity: 1;
+    position: relative;
+    z-index: 2;
+  }
+  .slide-content {
+    max-width: 780px;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 2.8rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  }
+  .slide h2 {
+    font-size: 3.2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+  }
+  .slide p {
+    font-size: 1.3rem;
+    margin-bottom: 1.6rem;
+    font-weight: 300;
+  }
+  .slide .btn-primary {
+    padding: 1rem 3rem;
+    background-color: #16a085;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(22,160,133,0.8);
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  .slide .btn-primary:hover {
+    background-color: #117a65;
+  }
+
+  /* Hero navigation arrows */
+  .hero-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 10;
+  }
+  .hero-nav button {
+    font-size: 2.2rem;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    pointer-events: all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease;
+  }
+  .hero-nav button:hover {
+    background: rgba(0,0,0,0.6);
+  }
+
+  /* Section styles */
+  section {
+    padding: 5rem 3rem 6rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-weight: 700;
+    font-size: 2.6rem;
+    color: #2980b9;
+    text-align: center;
+    margin-bottom: 3rem;
+    letter-spacing: 0.15em;
+  }
+
+  /* About Section */
+  #about {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  #about img {
+    max-width: 480px;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(41,128,185,0.3);
+  }
+  #about-text {
+    flex: 1;
+    color: #34495e;
+    font-weight: 400;
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+
+  /* Programs Section */
+  #programs {
+    background: #ecf6f9;
+    border-radius: 15px;
+    padding: 4rem 3rem;
+    box-shadow: 0 10px 40px rgba(41,128,185,0.15);
+  }
+  .program-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+    gap: 2rem;
+  }
+  .program-item {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+    padding: 1.8rem 1.5rem;
+    transition: box-shadow 0.3s ease;
+  }
+  .program-item:hover {
+    box-shadow: 0 12px 30px rgba(41,128,185,0.3);
+  }
+  .program-item h3 {
+    color: #2980b9;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+  }
+  .program-item p {
+    font-weight: 300;
+    color: #565656dd;
+    line-height: 1.5;
+  }
+
+  /* News Section */
+  #news {
+    margin-top: 4rem;
+  }
+  .news-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 2rem;
+  }
+  .news-item {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+  .news-item:hover {
+    box-shadow: 0 14px 50px rgba(41,128,185,0.4);
+  }
+  .news-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+  }
+  .news-content {
+    padding: 1rem 1.2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .news-title {
+    font-weight: 600;
+    color: #2980b9;
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+    flex-grow: 1;
+  }
+  .news-date {
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-top: auto;
+  }
+
+  /* Gallery Section */
+  #gallery {
+    margin-top: 4rem;
+    text-align: center;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+    gap: 10px;
+    margin-top: 2rem;
+  }
+  .gallery-grid img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(41,128,185,0.25);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .gallery-grid img:hover {
+    transform: scale(1.07);
+  }
+
+  /* Lightbox Modal */
+  #lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    cursor: zoom-out;
+  }
+  #lightbox img {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 15px;
+    box-shadow: 0 10px 35px rgba(41,128,185,0.9);
+  }
+
+  /* Contact Section */
+  #contact {
+    margin-top: 4rem;
+    background: #ecf6f9;
+    border-radius: 15px;
+    padding: 4rem 3rem;
+    box-shadow: 0 10px 40px rgba(41,128,185,0.15);
+  }
+  #contact h2 {
+    color: #2980b9;
+    text-align: center;
+    font-weight: 600;
+    font-size: 2.4rem;
+    margin-bottom: 3rem;
+    letter-spacing: 0.12em;
+  }
+  #contact form {
+    max-width: 550px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+  #contact input, #contact textarea {
+    border: 1.7px solid #2980b9;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    font-size: 1.05rem;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    resize: none;
+    color: #2c3e50;
+    background: white;
+    transition: border-color 0.3s ease;
+  }
+  #contact input:focus, #contact textarea:focus {
+    border-color: #16a085;
+    box-shadow: 0 0 12px #16a085aa;
+  }
+  #contact button {
+    background: #16a085;
+    color: white;
+    border: none;
+    font-weight: 700;
+    padding: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(22,160,133,0.8);
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+  }
+  #contact button:hover {
+    background: #117a65;
+    box-shadow: 0 12px 40px rgba(17,122,101,1);
+  }
+  #form-response {
+    margin-top: 1rem;
+    font-weight: 600;
+    color: #16a085;
+    text-align: center;
+  }
+
+  /* Footer */
+  footer {
+    background: #2980b9;
+    text-align: center;
+    padding: 1.3rem;
+    color: white;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+  }
+
+  /* Responsive */
+  @media (max-width: 880px) {
+    #about {
+      flex-direction: column;
+    }
+    #about img {
+      max-width: 100%;
+      margin-bottom: 2rem;
+    }
+  }
+  @media (max-width: 480px) {
+    nav {
+      padding: 0.8rem 1.5rem;
+    }
+    nav .logo {
+      font-size: 1.3rem;
+    }
+    .section-title {
+      font-size: 2rem;
+    }
+    .slide h2 {
+      font-size: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar" role="navigation" aria-label="Navigasi Utama">
+  <div class="logo" tabindex="0" aria-label="Beranda OSIS SMKN 6 PINRANG">OSIS SMKN 6 PINRANG</div>
+  <ul id="nav-menu" role="menubar">
+    <li role="none"><a href="#hero" class="active" role="menuitem" tabindex="0">Beranda</a></li>
+    <li role="none"><a href="#about" role="menuitem" tabindex="0">Tentang</a></li>
+    <li role="none"><a href="#programs" role="menuitem" tabindex="0">Program</a></li>
+    <li role="none"><a href="#news" role="menuitem" tabindex="0">Berita</a></li>
+    <li role="none"><a href="#gallery" role="menuitem" tabindex="0">Galeri</a></li>
+    <li role="none"><a href="#contact" role="menuitem" tabindex="0">Kontak</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" aria-label="Buka menu navigasi" role="button" tabindex="0" aria-expanded="false" aria-controls="nav-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</nav>
+
+<section id="hero" aria-label="Banner utama dengan gambar dan teks">
+  <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1625111381856-5cdedf9ae7a4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');" role="group" aria-roledescription="slide" aria-label="Slide 1">
+    <div class="slide-content">
+      <h2>Bergerak Bersama OSIS SMKN 6 PINRANG</h2>
+      <p>Membangun Karakter dan Prestasi Generasi Muda yang Berwawasan Luas</p>
+      <button class="btn-primary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})" aria-label="Pelajari lebih lanjut tentang OSIS">Pelajari Lebih Lanjut</button>
+    </div>
+  </div>
+  <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1615212851285-b7fa650348d8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');" role="group" aria-roledescription="slide" aria-label="Slide 2">
+    <div class="slide-content">
+      <h2>Kegiatan dan Program OSIS</h2>
+      <p>Menyalurkan Bakat dan Membentuk Kepedulian Sosial Melalui Berbagai Kegiatan</p>
+      <button class="btn-primary" onclick="document.getElementById('programs').scrollIntoView({behavior:'smooth'})" aria-label="Lihat program-program OSIS">Lihat Program</button>
+    </div>
+  </div>
+  <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1644390756677-3a0b2604d621?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');" role="group" aria-roledescription="slide" aria-label="Slide 3">
+    <div class="slide-content">
+      <h2>Bergabung dan Berkontribusi</h2>
+      <p>Jadilah Bagian dari Perubahan Positif di Sekolah dan Masyarakat</p>
+      <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" aria-label="Kontak OSIS SMKN 6 PINRANG">Kontak Kami</button>
+    </div>
+  </div>
+  <div class="hero-nav" aria-label="Kontrol navigasi hero slider">
+    <button id="prevSlide" aria-label="Slide sebelumnya" tabindex="0"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+    <button id="nextSlide" aria-label="Slide berikutnya" tabindex="0"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+  </div>
+</section>
+
+<section id="about" aria-labelledby="about-title">
+  <h2 id="about-title" class="section-title">Tentang OSIS</h2>
+  <div id="about-content">
+    <img src="https://images.unsplash.com/photo-1534269228015-66ea28d700b5?auto=format&fit=crop&w=600&q=80" alt="Kegiatan OSIS" />
+    <p id="about-text">
+      OSIS SMKN 6 PINRANG adalah organisasi yang mewadahi aspirasi dan semangat siswa untuk membangun karakter, 
+      kreativitas, dan prestasi. Kami berperan aktif dalam menyediakan ruang bagi siswa untuk berorganisasi, 
+      belajar kepemimpinan, dan menciptakan kegiatan yang bermanfaat.
+    </p>
+  </div>
+</section>
+
+<section id="programs" aria-labelledby="programs-title">
+  <h2 id="programs-title" class="section-title">Program OSIS</h2>
+  <div class="program-list" role="list">
+    <div class="program-item" role="listitem" tabindex="0" aria-describedby="prog1desc">
+      <h3>Ekstrakurikuler</h3>
+      <p id="prog1desc">Menyediakan wadah bagi siswa untuk mengembangkan bakat dan minat di bidang seni, olahraga, dan teknologi.</p>
+    </div>
+    <div class="program-item" role="listitem" tabindex="0" aria-describedby="prog2desc">
+      <h3>Bakti Sosial</h3>
+      <p id="prog2desc">Mengorganisir kegiatan sosial seperti donor darah, penggalangan dana, dan kerja bakti masyarakat.</p>
+    </div>
+    <div class="program-item" role="listitem" tabindex="0" aria-describedby="prog3desc">
+      <h3>Kepemimpinan</h3>
+      <p id="prog3desc">Pelatihan dan workshop pengembangan kepemimpinan bagi pengurus OSIS dan siswa.</p>
+    </div>
+    <div class="program-item" role="listitem" tabindex="0" aria-describedby="prog4desc">
+      <h3>Seminar & Workshop</h3>
+      <p id="prog4desc">Acara pengembangan soft skill dan wawasan untuk menunjang prestasi akademik dan non-akademik.</p>
+    </div>
+  </div>
+</section>
+
+<section id="news" aria-labelledby="news-title">
+  <h2 id="news-title" class="section-title">Berita & Pengumuman</h2>
+  <div class="news-list" role="list">
+    <article class="news-item" role="listitem" tabindex="0" aria-labelledby="news1title" aria-describedby="news1desc news1date">
+      <img src="https://images.unsplash.com/photo-1747431780750-712636825510?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Lomba VOLLY BALL" class="news-img" />
+      <h3 id="news1title" class="news-title">Lomba VOLLY BALL</h3>
+      <p id="news1desc" class="news-excerpt">SMKN 6 pinrang Mengadakan turnament Voly Ball antar SMP/MTS Sekecmatan Batulappa.</p>
+      <time id="news1date" class="news-date" datetime="2024-05-10">10 Mei 2024</time>
+    </article>
+    <article class="news-item" role="listitem" tabindex="0" aria-labelledby="news2title" aria-describedby="news2desc news2date">
+      <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80" alt="Donor darah" class="news-img" />
+      <h3 id="news2title" class="news-title">Donor Darah Bersama PMI</h3>
+      <p id="news2desc" class="news-excerpt">Kegiatan donor darah rutin oleh OSIS berkolaborasi dengan PMI untuk kepentingan masyarakat.</p>
+      <time id="news2date" class="news-date" datetime="2024-06-25">25 Juni 2024</time>
+    </article>
+    <article class="news-item" role="listitem" tabindex="0" aria-labelledby="news3title" aria-describedby="news3desc news3date">
+      <img src="https://images.unsplash.com/photo-1694105468919-e58696c430b4?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Festival seni" class="news-img" />
+      <h3 id="news3title" class="news-title">Festival Seni dan Budaya</h3>
+      <p id="news3desc" class="news-excerpt">Puncak acara tahunan OSIS menampilkan berbagai pertunjukan dan kreasi seni siswa.</p>
+      <time id="news3date" class="news-date" datetime="2024-07-20">26 Desember 2024</time>
+    </article>
+  </div>
+</section>
+
+<section id="gallery" aria-labelledby="gallery-title">
+  <h2 id="gallery-title" class="section-title">Galeri Foto</h2>
+  <div class="gallery-grid" role="list" aria-label="Galeri foto kegiatan OSIS">
+    <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=400&q=80" alt="Kegiatan OSIS 1" tabindex="0" role="listitem" />
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="Kegiatan OSIS 2" tabindex="0" role="listitem" />
+    <img src="https://images.unsplash.com/photo-1533777324565-a04df0e527b7?auto=format&fit=crop&w=400&q=80" alt="Kegiatan OSIS 3" tabindex="0" role="listitem" />
+    <img src="https://images.unsplash.com/photo-1534269228015-66ea28d700b5?auto=format&fit=crop&w=400&q=80" alt="Kegiatan OSIS 4" tabindex="0" role="listitem" />
+    <img src="https://images.unsplash.com/photo-1534375978146-7d6f7268b4a6?auto=format&fit=crop&w=400&q=80" alt="Kegiatan OSIS 5" tabindex="0" role="listitem" />
+    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=400&q=80" alt="Kegiatan OSIS 6" tabindex="0" role="listitem" />
+  </div>
+</section>
+
+<section id="contact" aria-labelledby="contact-title">
+  <h2 id="contact-title" class="section-title">Kontak Kami</h2>
+  <form id="contactForm" aria-label="Formulir kontak OSIS SMA Zion" style="max-width: 550px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.3rem;">
+    <input type="text" name="name" placeholder="Nama Lengkap" aria-required="true" required />
+    <input type="email" name="email" placeholder="Email" aria-required="true" required />
+    <textarea name="message" placeholder="Pesan Anda" rows="4" aria-required="true" required></textarea>
+    <button type="submit" class="btn-primary" aria-label="Kirim Pesan ke OSIS">Kirim Pesan</button>
+    <p id="formResponse" role="alert" style="color:#16a085; font-weight:600; text-align:center;"></p>
+  </form>
+</section>
+
+<footer role="contentinfo" aria-label="Footer situs">
+  &copy; 2025 OSIS SMKN 6 PINRANG. All rights reserved.
+  <div style="margin-top: 8px; font-size: 1.2rem;">
+    <a href="#" aria-label="Facebook" style="margin:0 0.6rem; color:#2980b9;"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" aria-label="Instagram" style="margin:0 0.6rem; color:#2980b9;"><i class="fab fa-instagram"></i></a>
+    <a href="#" aria-label="Twitter" style="margin:0 0.6rem; color:#2980b9;"><i class="fab fa-twitter"></i></a>
+  </div>
+</footer>
+
+<!-- Lightbox modal -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Galeri foto OSIS" tabindex="-1">
+  <img src="" alt="" />
+</div>
+
+<script>
+  // Navbar scroll color change & active menu link highlight
+  const nav = document.getElementById('navbar');
+  const navLinks = nav.querySelectorAll('ul li a');
+  const sections = Array.from(document.querySelectorAll('section'));
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('nav-menu');
+
+  // Scroll handler
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+
+    let currentSection = '';
+    for(const section of sections) {
+      const sectionTop = section.offsetTop - 80;
+      if(window.scrollY >= sectionTop) {
+        currentSection = section.getAttribute('id');
+      }
+    }
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if(link.getAttribute('href') === '#' + currentSection) {
+        link.classList.add('active');
+      }
+    });
+  });
+
+  // Hamburger toggle for mobile menu
+  hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('open');
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', String(!expanded));
+  });
+  hamburger.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      hamburger.click();
+    }
+  });
+
+  // Smooth scroll for nav links (default anchor scroll-behavior smooth covers this)
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      if(navMenu.classList.contains('open')) {
+        navMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // Hero Slider logic
+  const slides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevSlide');
+  const nextBtn = document.getElementById('nextSlide');
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+  function nextSlideFunc() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }
+  function prevSlideFunc() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  }
+  nextBtn.addEventListener('click', nextSlideFunc);
+  prevBtn.addEventListener('click', prevSlideFunc);
+
+  // Auto slide every 8 seconds
+  setInterval(nextSlideFunc, 8000);
+
+  // Gallery lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = lightbox.querySelector('img');
+  const galleryImages = document.querySelectorAll('.gallery-grid img');
+
+  galleryImages.forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.style.display = 'flex';
+      lightbox.focus();
+    });
+    img.addEventListener('keydown', e => {
+      if(e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        img.click();
+      }
+    });
+  });
+
+  lightbox.addEventListener('click', e => {
+    if(e.target === lightbox || e.target === lightboxImg) {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+      lightboxImg.alt = '';
+    }
+  });
+  lightbox.addEventListener('keydown', e => {
+    if(e.key === 'Escape') {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+      lightboxImg.alt = '';
+    }
+  });
+
+  // Contact form submission simulation
+  const contactForm = document.getElementById('contactForm');
+  const formResponse = document.getElementById('formResponse');
+
+  contactForm.addEventListener('submit', e => {
+    e.preventDefault();
+    formResponse.textContent = 'Terima kasih telah menghubungi OSIS SMKN 6 PINRANG. Kami akan segera merespons.';
+    contactForm.reset();
+  });
+</script>
+
+</body>
+</html>
+
